@@ -102,10 +102,10 @@ def assistant_frontend():
 
             if st.session_state.model == ANTHROPIC_MENU:
 
-                # Without streaming the answer (exception because there is a bug in anthropic async)
-
-                # Anthropic: if streaming (async / events), the answer is a list of 
-                # dictionaries (NOK), in place of a string (OK).
+                # Not streaming the answer
+                # Exception because there is a bug in anthropic async/event:
+                # if streaming, the answer is a list of dictionaries (NOK),
+                # in place of a string (OK).
 
                 answer_container = st.empty()        
                 response = ai_assistant_graph_agent.invoke({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId)
@@ -114,7 +114,7 @@ def assistant_frontend():
 
             else:
 
-                # With streaming the answer
+                # Streaming the answer
                 
                 async def agent_answer(question):
                     # invoke (sync) --> stream (sync stream invoke) --> astream_events (async stream invoke)
@@ -129,11 +129,7 @@ def assistant_frontend():
                                 answer_container.write(answer)
                     return(answer)
 
-                async def call_agent_answer(question):
-                    answer = await agent_answer(question)
-                    return(answer)
-
-                answer = asyncio.run(call_agent_answer(question))
+                answer = asyncio.run(agent_answer(question))
 
         except Exception as e:
             st.write("Error: Cannot invoke/stream the agent!")
