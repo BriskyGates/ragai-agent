@@ -103,6 +103,7 @@ def assistant_frontend():
             if st.session_state.model == ANTHROPIC_MENU:
 
                 # Not streaming the answer
+                
                 # Exception because there is a bug in anthropic async/event:
                 # if streaming, the answer is a list of dictionaries (NOK),
                 # in place of a string (OK).
@@ -115,7 +116,10 @@ def assistant_frontend():
             else:
 
                 # Streaming the answer
-                # invoke (sync) --> stream (sync stream invoke) --> astream_events (async stream invoke)
+
+                # Not streaming (sync): invoke
+                # Streaming (sync): stream
+                # Streaming (async): astream_events
                 
                 async def agent_answer(question):
                     answer = ""
