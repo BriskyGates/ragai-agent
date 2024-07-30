@@ -115,9 +115,9 @@ def assistant_frontend():
             else:
 
                 # Streaming the answer
+                # invoke (sync) --> stream (sync stream invoke) --> astream_events (async stream invoke)
                 
                 async def agent_answer(question):
-                    # invoke (sync) --> stream (sync stream invoke) --> astream_events (async stream invoke)
                     answer = ""
                     answer_container = st.empty()
                     async for event in ai_assistant_graph_agent.astream_events({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, version="v2"):
