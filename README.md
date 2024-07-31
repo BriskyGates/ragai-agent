@@ -14,6 +14,7 @@ This application can be configured (see config.py) to create your own specialize
 
 - AI Python framework: Langchain and Langgraph
 - Web interface Python framework: Streamlit
+- Web scraping Python framework: Beautifsoup 
 - Vector DB: Chroma (can run locally or on a remote server)
 - Tool n° 1: Hybrid RAG: bm25 keyword search and vector db semantic search. Hybrid RAG improves greatly the efficiency of the RAG search.
 - Tool n° 2: Web search (Tavily)
