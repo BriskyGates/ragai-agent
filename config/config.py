@@ -16,8 +16,8 @@ GOOGLE_MENU = "Google / Gemini"
 VERTEXAI_MENU = "Google (VertexAI) / Gemini"
 OLLAMA_MENU = "MetaAI (Ollama) / Llama"
 
-DEFAULT_MODEL = OPENAI_MENU  # One of the model menu choices
-DEFAULT_MENU_CHOICE = 0  # OpenAI: 0, Anthropic: 1, Google: 2, Google/VertexAI: 3, MetaAI/Ollama: 4
+DEFAULT_MODEL = ANTHROPIC_MENU  # One of the model menu choices
+DEFAULT_MENU_CHOICE = 1  # OpenAI: 0, Anthropic: 1, Google: 2, Google/VertexAI: 3, MetaAI/Ollama: 4
 DEFAULT_TEMPERATURE = 0.2  # OpenAI: 0-2, Anthropic: 0-1
 
 VECTORDB_MAX_RESULTS = 5
@@ -33,14 +33,14 @@ CHROMA_COLLECTION_NAME = "bmae"  # Name of the collection in the vector DB
 SYSTEM_PROMPT = """
 You are an artwork specialist. You assist the users in finding, describing, and displaying artworks related to the Belgian monarchy.
 
-You first have to search answers in the Knowledge Base. If no answers are found in the Knowledge Base, then answer with your own knowledge.
+You have to search answers in the Knowledge Base (belgian_monarchy_art_explorer_retriever tool) and on the internet (tavily_search_results_json tool). If no answers have been found, you can answer with your own knowledge.
 
 Answer in the same language as the question.
 
 At the end of the answer:
 
-- If requested, display one or more images of the artwork (see the JSON "og:image" field).
-- Give the link to the web page about the artwork (see the JSON "url" field).
+- Only if requested in the question, display one or more images of the artworks (see the JSON "og:image" fields).
+- Give the links to the web pages about the artworks (see the JSON "url" fields).
 
 Examples of markdown code:
 
