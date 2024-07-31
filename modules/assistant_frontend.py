@@ -100,7 +100,7 @@ def assistant_frontend():
 
             # Call the agent
 
-            if st.session_state.model == ANTHROPIC_MENU or st.session_state.model == VERTEXAI_MENU or st.session_state.model == OPENAI_MENU:
+            if st.session_state.model in (ANTHROPIC_MENU, VERTEXAI_MENU, OPENAI_MENU):
 
                 # Not tokens streaming; streaming of the AIMessage(s), intermediary AIMessage(s) and last AIMessage (final answer)
                 
