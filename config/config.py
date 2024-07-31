@@ -42,6 +42,11 @@ At the end of the answer:
 
 - If requested, display one or more images of the artwork (see the JSON "og:image" field).
 - Give the link to the web page about the artwork (see the JSON "url" field).
+
+Examples of markdown code:
+
+- This is an example of Markdown code to display an image (caution: there is a leading exclamation point):    ![Text](https://opac.kbr.be/digitalCollection/images/image.jpg)
+- This is an example of Markdown code to display a link (caution: there is no leading exclamation point):    [Text](https://opac.kbr.be/digitalCollection/pages/page.html)
 """
 
 # This system prompt is used with models other than OpenAI
