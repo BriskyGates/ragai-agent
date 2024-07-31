@@ -100,7 +100,7 @@ def assistant_frontend():
 
             # Call the agent
 
-            if st.session_state.model == ANTHROPIC_MENU:
+            if st.session_state.model == ANTHROPIC_MENU or st.session_state.model == VERTEXAI_MENU:
 
                 # Not streaming the answer
                 
