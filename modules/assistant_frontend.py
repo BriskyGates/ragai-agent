@@ -104,21 +104,20 @@ def assistant_frontend():
 
                 # Not tokens streaming; streaming of the AIMessage(s), intermediary AIMessage(s) and last AIMessage (final answer)
                 
-                # Exception because there is a bug in Anthropic async/event:
-                # if streaming, the answer is a list of dictionaries (NOK),
-                # in place of a string (OK). Also a problem with Google VertexAI.
-
                 answer_container = st.empty()
                 answer = ""
                 for message in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="values"):
                     message_type1 = type(message["messages"][-1]).__name__  # HumanMessage, AIMessage, ToolMessage
                     message_type2 = type(message["messages"][-1].content).__name__  # str only for last AIMessage, else dict
                     if message_type1 == "AIMessage" and message_type2 == "str":
-                        answer = message["messages"][-1].content
-                        answer_container.write(answer)  # Last AIMessage = Final answer
+                        answer_final = message["messages"][-1].content  # Last AIMessage = Final answer
+                        answer = answer + answer_final
+                        answer_container.write(answer_final)  
                     elif message_type1 == "AIMessage":
-                        answer_container.write(message["messages"][-1].content[0]["text"])  # AIMessage(s) = Intermediary answer(s)
-
+                        answer_inter = message["messages"][-1].content[0]["text"]  # AIMessage(s) = Intermediary answer(s)
+                        answer = answer + answer_inter
+                        answer_container.write(answer_inter)
+                        
             else:
 
                 # Tokens streaming of the last AIMessage (final answer)
@@ -126,6 +125,9 @@ def assistant_frontend():
                 # Not streaming (sync): invoke
                 # Streaming (sync): stream
                 # Streaming (async): astream_events
+
+                # NOK with Anthropic async/event: if tokens streaming, the answer is a list of dictionaries (NOK),
+                # in place of a string (OK). Also a problem with Google VertexAI.
                 
                 async def agent_answer(question):
                     answer = ""
