@@ -152,7 +152,7 @@ def assistant_frontend():
                 
                 answer = asyncio.run(agent_answer(question))
 
-            else:
+            if st.session_state.model in (GOOGLE_MENU, OLLAMA_MENU):
                 answer_container = st.empty()
                 answer_container.write("Error: model not supported")
 
