@@ -100,9 +100,18 @@ def assistant_frontend():
 
             # Call the agent
 
-            if st.session_state.model in (ANTHROPIC_MENU, VERTEXAI_MENU):
+            if st.session_state.model in (VERTEXAI_MENU):
 
-                # Not tokens streaming, but streaming of the AIMessage(s), intermediary AIMessage(s) and last AIMessage (final answer)
+                # Last AIMessage (final answer) / No tokens streaming
+
+                answer_container = st.empty()        
+                response = ai_assistant_graph_agent.invoke({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId)
+                answer = response["messages"][-1].content
+                answer_container.write(answer)                
+
+            if st.session_state.model in (ANTHROPIC_MENU):
+
+                # All AIMessage (intermediary and final answers) / No tokens streaming
                 
                 answer_container = st.empty()
                 answer = ""
@@ -118,12 +127,12 @@ def assistant_frontend():
                         answer = answer + answer_inter
                         answer_container.write(answer_inter)
                         
-            else:
+            if st.session_state.model in (OPENAI_MENU):
 
-                # Tokens streaming of the last AIMessage (final answer)
+                # Last AIMessage (final answer) / Tokens streaming
 
                 # Not streaming (sync): invoke
-                # Streaming (sync): stream
+                # Streaming (sync): stream (messages or tokens)
                 # Streaming (async): astream_events
 
                 # NOK with Anthropic async/event: if tokens streaming, the answer is a list of dictionaries (NOK),
@@ -140,8 +149,12 @@ def assistant_frontend():
                                 answer = answer + answer_token
                                 answer_container.write(answer)
                     return(answer)
-
+                
                 answer = asyncio.run(agent_answer(question))
+
+            else:
+                answer_container = st.empty()
+                answer_container.write("Error: model not supported")
 
         except Exception as e:
             st.write("Error: Cannot invoke/stream the agent!")
