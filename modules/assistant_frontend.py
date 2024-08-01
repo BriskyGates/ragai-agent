@@ -111,43 +111,45 @@ def assistant_frontend():
 
             # Display all AIMessage (intermediary and final answers) + tool calls / No tokens streaming
             
-            for message in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="values"):
-                message_type1 = type(message["messages"][-1]).__name__  # HumanMessage, AIMessage, ToolMessage
-                message_type2 = type(message["messages"][-1].content).__name__  # str only for last AIMessage, else dict
-                if message_type1 == "AIMessage" and message_type2 == "str":
-                    answer = message["messages"][-1].content  # Last AIMessage = Final answer
-                    st.chat_message("assistant").markdown(answer)
-                elif message_type1 == "AIMessage":
-                    data = message["messages"][-1].content
-                    answer = data[0]["text"]
-                    st.chat_message("assistant").markdown(answer)
-                    for item in data[1:]:
-                        if "name" in item:
-                            answer = item["name"]
-                            if answer == "belgian_monarchy_art_explorer_retriever":
-                                st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the knowledge base ({answer})...")
-                            elif answer == "tavily_search_results_json":
-                                st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the internet ({answer})...")
+            for s in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="updates"):
+                #st.write("xxxx", s)
+                for key in s:
+                    if key.startswith("agent"):  # AIMessage
+                        message_type = type(s["agent"]["messages"][-1].content).__name__  
+                        if message_type == "str":  # str only for last AIMessage, else dict
+                            answer = s["agent"]["messages"][-1].content  # Last AIMessage = Final answer
+                            if answer: st.chat_message("assistant").markdown(answer)
+                        else:
+                            data = s["agent"]["messages"][-1].content
+                            answer = data[0]["text"]
+                            st.chat_message("assistant").markdown(answer)
+                            for item in data[1:]:
+                                if "name" in item:
+                                    answer = item["name"]
+                                    if answer == "belgian_monarchy_art_explorer_retriever":
+                                        st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the knowledge base ({answer})...")
+                                    elif answer == "tavily_search_results_json":
+                                        st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the internet ({answer})...")
                     
         elif st.session_state.model in (OPENAI_MENU):
 
             # Display all AIMessage (intermediary and final answers) + tool calls / No tokens streaming
             
-            for message in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="values"):
-                message_type1 = type(message["messages"][-1]).__name__  # HumanMessage, AIMessage, ToolMessage
-                message_type2 = type(message["messages"][-1].content).__name__  # str only for last AIMessage, else dict
-                if message_type1 == "AIMessage" and message_type2 == "str":
-                    answer = message["messages"][-1].content  # Last AIMessage = Final answer
-                    st.chat_message("assistant").markdown(answer)
-                elif message_type1 == "AIMessage":
-                    data = message["messages"][-1].content
-                    answer = data[0]["text"]
-                    st.chat_message("assistant").markdown(f"Intermediary answer: {answer}")
-                    for item in data[1:]:
-                        if "name" in item:
-                            answer = item["name"]
-                            st.chat_message("tool").markdown(f"Tool call: {answer}")
-
+            for s in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="updates"):
+                #st.write(s)
+                for key in s:
+                    if key.startswith("agent"):  # AIMessage
+                        answer = s["agent"]["messages"][-1].content  
+                        if answer: st.chat_message("assistant").markdown(answer)
+                        data = s["agent"]["messages"][-1].tool_calls
+                        for item in data:
+                            if "name" in item:
+                                answer = item["name"]
+                                if answer == "belgian_monarchy_art_explorer_retriever":
+                                    st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the knowledge base ({answer})...")
+                                elif answer == "tavily_search_results_json":
+                                    st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the internet ({answer})...")
+  
         elif st.session_state.model in ("XXX"):
         
             # Display last AIMessage (final answer) / Tokens streaming
