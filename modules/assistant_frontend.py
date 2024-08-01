@@ -109,25 +109,26 @@ def assistant_frontend():
                 answer = response["messages"][-1].content
                 answer_container.write(answer)                
 
-            if st.session_state.model in (ANTHROPIC_MENU):
+            elif st.session_state.model in (ANTHROPIC_MENU):
 
                 # All AIMessage (intermediary and final answers) / No tokens streaming
                 
-                answer_container = st.empty()
                 answer = ""
                 for message in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="values"):
                     message_type1 = type(message["messages"][-1]).__name__  # HumanMessage, AIMessage, ToolMessage
                     message_type2 = type(message["messages"][-1].content).__name__  # str only for last AIMessage, else dict
                     if message_type1 == "AIMessage" and message_type2 == "str":
+                        answer_container = st.empty()
                         answer_final = message["messages"][-1].content  # Last AIMessage = Final answer
                         answer = answer + answer_final
-                        answer_container.write(answer_final)  
+                        answer_container.write(answer)
                     elif message_type1 == "AIMessage":
+                        answer_container = st.empty()
                         answer_inter = message["messages"][-1].content[0]["text"]  # AIMessage(s) = Intermediary answer(s)
                         answer = answer + answer_inter
-                        answer_container.write(answer_inter)
+                        answer_container.write(answer)
                         
-            if st.session_state.model in (OPENAI_MENU):
+            elif st.session_state.model in (OPENAI_MENU):
 
                 # Last AIMessage (final answer) / Tokens streaming
 
@@ -152,7 +153,8 @@ def assistant_frontend():
                 
                 answer = asyncio.run(agent_answer(question))
 
-            if st.session_state.model in (GOOGLE_MENU, OLLAMA_MENU):
+            else: 
+                st.session_state.model in (GOOGLE_MENU, OLLAMA_MENU)
                 answer_container = st.empty()
                 answer_container.write("Error: model not supported")
 
