@@ -156,12 +156,13 @@ def assistant_frontend():
                 answer_container = st.empty()
                 answer_container.write("Error: model not supported")
 
+            # Add Answer to chat history for Streamlit (messages)
+            st.session_state.messages.append({"role": "assistant", "content": answer})
+
+            # Clear the conversation
+            st.button(NEW_CHAT_MESSAGE, on_click=reset_conversation)
+
         except Exception as e:
             st.write("Error: Cannot invoke/stream the agent!")
             st.write(f"Error: {e}")
-
-        # Add Answer to chat history for Streamlit (messages)
-        st.session_state.messages.append({"role": "assistant", "content": answer})
-
-        # Clear the conversation
-        st.button(NEW_CHAT_MESSAGE, on_click=reset_conversation)
+        
