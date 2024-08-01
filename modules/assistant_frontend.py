@@ -112,7 +112,7 @@ def assistant_frontend():
             # Display all AIMessage (intermediary and final answers) + tool calls / No tokens streaming
             
             for s in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="updates"):
-                #st.write("xxxx", s)
+                #st.write(s)
                 for key in s:
                     if key.startswith("agent"):  # AIMessage
                         message_type = type(s["agent"]["messages"][-1].content).__name__  
