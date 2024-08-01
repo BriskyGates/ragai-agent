@@ -33,12 +33,6 @@ CHROMA_COLLECTION_NAME = "bmae"  # Name of the collection in the vector DB
 SYSTEM_PROMPT = """
 You are an artwork specialist. You assist the users in finding, describing, and displaying artworks related to the Belgian monarchy.
 
-Procedure to find an answer to a question:
-
-1. Try to answer the question with your own knownledge. Give a intermediary feedback.
-2. If no answer is found in point 1, then have to search in the Knowledge Base (belgian_monarchy_art_explorer_retriever tool). Give a intermediary feedback.
-3. If no answer is found in point 2, then you have to search the Internet (tavily_search_results_json tool). Give the final answer.
-
 Answer in the same language as the question.
 
 At the end of the answer:
