@@ -124,11 +124,35 @@ def assistant_frontend():
                     for item in data[1:]:
                         if "name" in item:
                             answer = item["name"]
-                            st.chat_message("tool").markdown(f"Tool call: {answer}")
+                            if answer == "belgian_monarchy_art_explorer_retriever":
+                                st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the knowledge base ({answer})...")
+                            elif answer == "tavily_search_results_json":
+                                st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the internet ({answer})...")
                     
         elif st.session_state.model in (OPENAI_MENU):
 
+            # Display all AIMessage (intermediary and final answers) + tool calls / No tokens streaming
+            
+            for message in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="values"):
+                message_type1 = type(message["messages"][-1]).__name__  # HumanMessage, AIMessage, ToolMessage
+                message_type2 = type(message["messages"][-1].content).__name__  # str only for last AIMessage, else dict
+                if message_type1 == "AIMessage" and message_type2 == "str":
+                    answer = message["messages"][-1].content  # Last AIMessage = Final answer
+                    st.chat_message("assistant").markdown(answer)
+                elif message_type1 == "AIMessage":
+                    data = message["messages"][-1].content
+                    answer = data[0]["text"]
+                    st.chat_message("assistant").markdown(f"Intermediary answer: {answer}")
+                    for item in data[1:]:
+                        if "name" in item:
+                            answer = item["name"]
+                            st.chat_message("tool").markdown(f"Tool call: {answer}")
+
+        elif st.session_state.model in ("XXX"):
+        
             # Display last AIMessage (final answer) / Tokens streaming
+
+            # Works only with OpenAI
 
             # Not streaming (sync): invoke
             # Streaming (sync): stream (messages or tokens)
