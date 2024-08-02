@@ -129,7 +129,7 @@ def assistant_frontend():
             
             for s in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="updates"):
                 for key in s:
-                    if key.startswith("agent"):  # if AIMessage (not ToolMessage or UserMessage)
+                    if key.startswith("agent"):  # if AIMessage (not ToolMessage or HumanMessage)
                         answer = s["agent"]["messages"][-1].content  # AI answer
                         if answer:  # if AIMessage not empty
                             st.chat_message("assistant").markdown(answer)
