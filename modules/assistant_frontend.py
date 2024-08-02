@@ -99,17 +99,9 @@ def assistant_frontend():
 
         # Call the agent
 
-        if st.session_state.model in (VERTEXAI_MENU):
+        if st.session_state.model in (ANTHROPIC_MENU):
 
-            # Display last AIMessage (final answers) / No tokens streaming
-
-            response = ai_assistant_graph_agent.invoke({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId)
-            answer = response["messages"][-1].content                
-            st.chat_message("assistant").markdown(answer)
-
-        elif st.session_state.model in (ANTHROPIC_MENU):
-
-            # Display all AIMessage (intermediary and final answers) + tool calls / No tokens streaming
+            # Display all AIMessage + tool calls / No tokens streaming
             
             for s in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="updates"):
                 #st.write(s)
@@ -133,7 +125,7 @@ def assistant_frontend():
                     
         elif st.session_state.model in (OPENAI_MENU):
 
-            # Display all AIMessage (intermediary and final answers) + tool calls / No tokens streaming
+            # Display all AIMessage + tool calls / No tokens streaming
             
             for s in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="updates"):
                 #st.write(s)
@@ -150,35 +142,39 @@ def assistant_frontend():
                                 elif answer == "tavily_search_results_json":
                                     st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the internet ({answer})...")
   
-        elif st.session_state.model in ("XXX"):
-        
-            # Display last AIMessage (final answer) / Tokens streaming
+        else:
+
+            # OPTION 1: Display only last AIMessage / No tokens streaming
+
+            #response = ai_assistant_graph_agent.invoke({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId)
+            #answer = response["messages"][-1].content                
+            #st.chat_message("assistant").markdown(answer)
+
+            # OPTION 2: Display only last AIMessage / Tokens streaming
 
             # Works only with OpenAI
 
             # Not streaming (sync): invoke
             # Streaming (sync): stream (messages or tokens)
-            # Streaming (async): astream_events
+            # Streaming (async): astream_events (or astream?)
 
-            # NOK with Anthropic async/event: if tokens streaming, the answer is a list of dictionaries (NOK),
+            # NOK with Anthropic: the answer is a list of dictionaries (NOK),
             # in place of a string (OK). Also a problem with Google VertexAI.
             
-            async def agent_answer(question):
-                answer = ""
-                answer_container = st.empty()
-                async for event in ai_assistant_graph_agent.astream_events({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, version="v2"):
-                    kind = event["event"]
-                    if kind == "on_chat_model_stream":
-                        answer_token = event["data"]["chunk"].content
-                        if answer_token:
-                            answer = answer + answer_token
-                            answer_container.write(answer)
-                return(answer)
+            # async def agent_answer(question):
+            #     answer = ""
+            #     answer_container = st.empty()
+            #     async for event in ai_assistant_graph_agent.astream_events({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, version="v2"):
+            #         kind = event["event"]
+            #         if kind == "on_chat_model_stream":
+            #             answer_token = event["data"]["chunk"].content
+            #             if answer_token:
+            #                 answer = answer + answer_token
+            #                 answer_container.write(answer)
+            #     return(answer)
             
-            answer = asyncio.run(agent_answer(question))
-
-        else: 
-            st.session_state.model in (GOOGLE_MENU, OLLAMA_MENU)
+            # answer = asyncio.run(agent_answer(question))
+            
             answer_container = st.empty()
             answer_container.write("Error: model not supported")
 
