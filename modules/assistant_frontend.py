@@ -109,20 +109,27 @@ def assistant_frontend():
                     if key.startswith("agent"):  # AIMessage
                         message_type = type(s["agent"]["messages"][-1].content).__name__  
                         if message_type == "str":  # str only for last AIMessage, else dict
-                            answer = s["agent"]["messages"][-1].content  # Last AIMessage = Final answer
-                            if answer: st.chat_message("assistant").markdown(answer)
+                            answer = s["agent"]["messages"][-1].content  # Last AIMessage
+                            if answer:  # Answer not empty
+                                st.chat_message("assistant").markdown(answer)
+                                st.session_state.messages.append({"role": "assistant", "content": answer})
                         else:
                             data = s["agent"]["messages"][-1].content
-                            answer = data[0]["text"]
+                            answer = data[0]["text"]  # Intermediary AIMessage
                             st.chat_message("assistant").markdown(answer)
+                            st.session_state.messages.append({"role": "assistant", "content": answer})
                             for item in data[1:]:
                                 if "name" in item:
                                     answer = item["name"]
                                     if answer == "belgian_monarchy_art_explorer_retriever":
-                                        st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the knowledge base ({answer})...")
+                                        answer = "Searching the knowledge base..."
+                                        st.chat_message("assistant").markdown(answer)
+                                        st.session_state.messages.append({"role": "assistant", "content": answer})
                                     elif answer == "tavily_search_results_json":
-                                        st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the internet ({answer})...")
-                    
+                                        answer = "Searching the internet..."
+                                        st.chat_message("assistant").markdown(answer)
+                                        st.session_state.messages.append({"role": "assistant", "content": answer})
+
         elif st.session_state.model in (OPENAI_MENU):
 
             # Display all AIMessage + tool calls / No tokens streaming
