@@ -128,19 +128,24 @@ def assistant_frontend():
             # Display all AIMessage + tool calls / No tokens streaming
             
             for s in ai_assistant_graph_agent.stream({"messages": [HumanMessage(content=question)]}, config=st.session_state.threadId, stream_mode="updates"):
-                #st.write(s)
                 for key in s:
-                    if key.startswith("agent"):  # AIMessage
-                        answer = s["agent"]["messages"][-1].content  
-                        if answer: st.chat_message("assistant").markdown(answer)
-                        data = s["agent"]["messages"][-1].tool_calls
+                    if key.startswith("agent"):  # if AIMessage (not ToolMessage or UserMessage)
+                        answer = s["agent"]["messages"][-1].content  # AI answer
+                        if answer:  # if AIMessage not empty
+                            st.chat_message("assistant").markdown(answer)
+                            st.session_state.messages.append({"role": "assistant", "content": answer})
+                        data = s["agent"]["messages"][-1].tool_calls  # Array of called tools
                         for item in data:
                             if "name" in item:
                                 answer = item["name"]
                                 if answer == "belgian_monarchy_art_explorer_retriever":
-                                    st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the knowledge base ({answer})...")
+                                    answer = "Searching the knowledge base..."
+                                    st.chat_message("assistant").markdown(answer)
+                                    st.session_state.messages.append({"role": "assistant", "content": answer})
                                 elif answer == "tavily_search_results_json":
-                                    st.chat_message(name="tool", avatar=":material/search:").markdown(f"Search the internet ({answer})...")
+                                    answer = "Searching the internet..."
+                                    st.chat_message("assistant").markdown(answer)
+                                    st.session_state.messages.append({"role": "assistant", "content": answer})
   
         else:
 
@@ -175,11 +180,11 @@ def assistant_frontend():
             
             # answer = asyncio.run(agent_answer(question))
             
-            answer_container = st.empty()
-            answer_container.write("Error: model not supported")
+            stcontainer = st.empty()
+            stcontainer.write("Error: model not supported")
 
         # Add answer to Streamlit chat history (messages)
-        st.session_state.messages.append({"role": "assistant", "content": answer})
+        #st.session_state.messages.append({"role": "assistant", "content": answer})
 
         # Clear the conversation
         st.button(NEW_CHAT_MESSAGE, on_click=reset_conversation)
