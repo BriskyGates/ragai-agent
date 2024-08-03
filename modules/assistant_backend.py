@@ -34,8 +34,8 @@ from config.config import *
 
 
 @tool
-def tavily_search_images(query: str) -> str:
-    """Search the Internet for images related to the question."""
+def tavily_search_with_images(query: str):
+    """Search the Internet for answers and images related to the question."""
     search = TavilySearchResults(
         max_results=2,
         include_answer=False,
@@ -47,7 +47,7 @@ def tavily_search_images(query: str) -> str:
     return(answer)
 
 
-# @st.cache_resource
+@st.cache_resource
 def instanciate_ai_assistant_graph_agent(model, temperature):
     """
     Instantiate tools (retrievers, web search) and graph agent.
@@ -120,7 +120,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature):
 
     try:
 
-        #search = TavilySearchResults(max_results=2, include_answer=True, include_raw_content=False, include_images=True)
+        #search = TavilySearchResults(max_results=2)
 
         rag = create_retriever_tool(
             ensemble_retriever,
@@ -128,7 +128,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature):
             "Search the Knowlege Base for artworks related to the Belgian monarchy."
         )
 
-        tools = [tavily_search_images]
+        tools = [tavily_search_with_images, rag]
 
         #memory = SqliteSaver.from_conn_string(":memory:")
         memory = MemorySaver()
