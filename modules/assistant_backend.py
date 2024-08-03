@@ -28,11 +28,26 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.prebuilt import create_react_agent
 #from langgraph.checkpoint.sqlite import SqliteSaver  # on disk checkpointer (memory)
 from langgraph.checkpoint import MemorySaver  # an in-memory checkpointer (memory)
+from langchain_core.tools import tool
 
 from config.config import *
 
 
-@st.cache_resource
+@tool
+def tavily_search_images(query: str) -> str:
+    """Search the Internet for images related to the question."""
+    search = TavilySearchResults(
+        max_results=2,
+        include_answer=False,
+        include_raw_content=False,
+        include_images=True,
+        #response_format="content_and_artifact",
+    )
+    answer = search.invoke({"args": {'query': query}, "type": "tool_call", "id": "ragai1234", "name": "tavily"})
+    return(answer)
+
+
+# @st.cache_resource
 def instanciate_ai_assistant_graph_agent(model, temperature):
     """
     Instantiate tools (retrievers, web search) and graph agent.
@@ -105,7 +120,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature):
 
     try:
 
-        search = TavilySearchResults(max_results=2, include_images=True, include_answer=False)
+        #search = TavilySearchResults(max_results=2, include_answer=True, include_raw_content=False, include_images=True)
 
         rag = create_retriever_tool(
             ensemble_retriever,
@@ -113,7 +128,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature):
             "Search the Knowlege Base for artworks related to the Belgian monarchy."
         )
 
-        tools = [search, rag]
+        tools = [tavily_search_images]
 
         #memory = SqliteSaver.from_conn_string(":memory:")
         memory = MemorySaver()
