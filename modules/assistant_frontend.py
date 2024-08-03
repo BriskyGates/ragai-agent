@@ -125,7 +125,7 @@ def assistant_frontend():
                                         answer = "Searching the knowledge base..."
                                         st.chat_message("assistant").markdown(answer)
                                         st.session_state.messages.append({"role": "assistant", "content": answer})
-                                    elif answer == "tavily_search_results_json":
+                                    elif answer == "tavily_search_with_images":
                                         answer = "Searching the internet..."
                                         st.chat_message("assistant").markdown(answer)
                                         st.session_state.messages.append({"role": "assistant", "content": answer})
@@ -149,7 +149,7 @@ def assistant_frontend():
                                     answer = "Searching the knowledge base..."
                                     st.chat_message("assistant").markdown(answer)
                                     st.session_state.messages.append({"role": "assistant", "content": answer})
-                                elif answer == "tavily_search_results_json":
+                                elif answer == "tavily_search_with_images":
                                     answer = "Searching the internet..."
                                     st.chat_message("assistant").markdown(answer)
                                     st.session_state.messages.append({"role": "assistant", "content": answer})
