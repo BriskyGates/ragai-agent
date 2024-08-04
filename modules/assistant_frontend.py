@@ -110,9 +110,8 @@ def assistant_frontend():
                         message_type = type(s["agent"]["messages"][-1].content).__name__  
                         if message_type == "str":  # str only for last AIMessage, else dict
                             answer = s["agent"]["messages"][-1].content  # Last AIMessage
-                            if answer:  # Answer not empty
-                                st.chat_message("assistant").markdown(answer)
-                                st.session_state.messages.append({"role": "assistant", "content": answer})
+                            st.chat_message("assistant").markdown(answer)
+                            st.session_state.messages.append({"role": "assistant", "content": answer})
                         else:
                             data = s["agent"]["messages"][-1].content
                             answer = data[0]["text"]  # Intermediary AIMessage
