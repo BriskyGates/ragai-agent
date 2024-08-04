@@ -9,7 +9,7 @@ This function runs the frontend web interface.
 import streamlit as st
 from langchain_core.messages.human import HumanMessage
 import uuid
-import asyncio
+#import asyncio
 
 from modules.assistant_backend import instanciate_ai_assistant_graph_agent
 from config.config import *
@@ -64,7 +64,7 @@ def assistant_frontend():
     st.image(LOGO_PATH, use_column_width=True)
 
     st.markdown(f"## {ASSISTANT_NAME}")
-    st.caption("💬 A chatbot powered by Langchain, Langgraph and Streamlit")
+    st.caption("💬 An AI agent powered by Langchain, Langgraph and Streamlit")
 
     # # # # # # # # # # # # # #
     # Side bar window (About) #
