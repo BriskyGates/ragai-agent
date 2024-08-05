@@ -48,9 +48,13 @@ def assistant_frontend():
     if "input_password" not in st.session_state:
         st.session_state.input_password = ""
 
+    if "enable_tavily" not in st.session_state:
+        st.session_state.enable_tavily = True
+        st.session_state.enable_rag = True
+
     # Retrieve and generate
 
-    ai_assistant_graph_agent = instanciate_ai_assistant_graph_agent(st.session_state.model, st.session_state.temperature)
+    ai_assistant_graph_agent = instanciate_ai_assistant_graph_agent(st.session_state.model, st.session_state.temperature, st.session_state.enable_tavily, st.session_state.enable_rag)
 
     # Write the mermaid graph in the graph.txt file (to be displayed in https://mermaid.live/)
     with open("graph.txt", "w") as f:
@@ -76,6 +80,9 @@ def assistant_frontend():
             "Model:",
             (ANTHROPIC_MENU, OPENAI_MENU)
         )
+
+        st.session_state.enable_tavily = st.checkbox('Search the internet', value=True)
+        st.session_state.enable_rag = st.checkbox('Search the knowledge base', value=True)
 
         st.write(f"Model: {st.session_state.model} ({st.session_state.temperature})")
         st.write(ABOUT_TEXT)

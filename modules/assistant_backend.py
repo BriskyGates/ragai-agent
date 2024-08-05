@@ -48,7 +48,7 @@ def tavily_search_with_images(query: str):
 
 
 @st.cache_resource
-def instanciate_ai_assistant_graph_agent(model, temperature):
+def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enable_rag):
     """
     Instantiate tools (retrievers, web search) and graph agent.
     Steps: Retrieve and generate.
@@ -128,8 +128,15 @@ def instanciate_ai_assistant_graph_agent(model, temperature):
             "Search the Knowlege Base for artworks related to the Belgian monarchy."
         )
 
-        tools = [tavily_search_with_images, rag]
-
+        if enable_rag and enable_tavily:
+            tools = [tavily_search_with_images, rag]
+        elif enable_tavily:
+            tools = [tavily_search_with_images]
+        elif enable_rag:
+            tools = [rag]
+        else:
+            tools = []
+            
         #memory = SqliteSaver.from_conn_string(":memory:")
         memory = MemorySaver()
 
