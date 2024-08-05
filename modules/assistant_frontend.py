@@ -72,6 +72,11 @@ def assistant_frontend():
 
     with st.sidebar:
 
+        st.session_state.model = st.radio(
+            "Model:",
+            (ANTHROPIC_MENU, OPENAI_MENU)
+        )
+
         st.write(f"Model: {st.session_state.model} ({st.session_state.temperature})")
         st.write(ABOUT_TEXT)
         st.write(SIDEBAR_FOOTER)
