@@ -130,8 +130,8 @@ def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enab
 
         rag = create_retriever_tool(
             ensemble_retriever,
-            "belgian_monarchy_art_explorer_retriever",
-            "Search the Knowlege Base for artworks related to the Belgian monarchy."
+            "artwork_displayer",
+            "Search the Knowlege Base for artworks."
         )
 
         if enable_rag and enable_tavily:
