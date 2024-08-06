@@ -77,7 +77,7 @@ def assistant_frontend():
     with st.sidebar:
 
         st.session_state.model = st.radio(
-            "Model:",
+            "AI Model:",
             (ANTHROPIC_MENU, OPENAI_MENU)
         )
 
