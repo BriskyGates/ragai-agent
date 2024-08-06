@@ -31,7 +31,7 @@ CHROMA_SERVER_PORT = "8000"
 CHROMA_COLLECTION_NAME = "bmae"  # Name of the collection in the vector DB
 
 SYSTEM_PROMPT = """
-You are an artwork specialist. You assist the users in finding, describing, and displaying artworks related to the Belgian monarchy, but you can also answer questions related to other topics.
+You are an artwork specialist. You assist the users in finding, describing, and displaying artworks.
 
 Answer in the same language as the question.
 
@@ -50,7 +50,7 @@ Examples of markdown code:
 
 # Frontend (Streamlit)
 
-LOGO_PATH = "./images/logo-image.jpg"
+LOGO_PATH = "./images/logo-image-test.jpg"
 ASSISTANT_ICON = "👑"
 ASSISTANT_NAME = "Art History Explorer"
 
