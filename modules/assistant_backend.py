@@ -47,6 +47,12 @@ def tavily_search_with_images(query: str):
     return(answer)
 
 
+@tool
+def fake_tool(query: str):
+    """Fake tool."""
+    return(query)
+
+
 @st.cache_resource
 def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enable_rag):
     """
@@ -135,7 +141,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enab
         elif enable_rag:
             tools = [rag]
         else:
-            tools = []
+            tools = [fake_tool]
             
         #memory = SqliteSaver.from_conn_string(":memory:")
         memory = MemorySaver()
