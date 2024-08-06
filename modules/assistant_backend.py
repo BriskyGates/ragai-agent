@@ -126,7 +126,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enab
 
     try:
 
-        #search = TavilySearchResults(max_results=2, include_images=True, include_answer=False)
+        search = TavilySearchResults(max_results=2, include_images=True, include_answer=False)
 
         rag = create_retriever_tool(
             ensemble_retriever,
@@ -141,7 +141,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enab
         elif enable_rag:
             tools = [rag]
         else:
-            tools = [fake_tool]
+            tools = [search]  #fake_tool]
             
         #memory = SqliteSaver.from_conn_string(":memory:")
         memory = MemorySaver()
