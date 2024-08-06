@@ -31,7 +31,7 @@ CHROMA_SERVER_PORT = "8000"
 CHROMA_COLLECTION_NAME = "bmae"  # Name of the collection in the vector DB
 
 SYSTEM_PROMPT = """
-You are an artwork specialist. You assist the users in finding, describing, and displaying artworks.
+You are a history and art history specialist. You assist the users in finding, describing, and displaying artworks related to history and art history.
 
 Answer in the same language as the question.
 
@@ -61,17 +61,17 @@ USER_PROMPT = "Enter your question / Entrez votre question / Voer uw vraag in"
 ABOUT_TEXT = """
 ### About this assistant
 
-This artificial intelligence assistant allows you to ask all kinds of questions regarding art history. It is especially build to display images. To answer, the assistant \
+This artificial intelligence assistant allows you to ask all kinds of questions regarding history and art history. It is especially build to display images. To answer, the assistant \
 queries different images databases or the internet.
 
 ### Concernant cet assistant
 
-Cet assistant d'intelligence artificielle permet de poser toutes sortes de questions sur l'histoire de l'art. Il est spécialement conçu pour afficher des images. Pour répondre, \
+Cet assistant d'intelligence artificielle permet de poser toutes sortes de questions sur l'histoire et l'histoire de l'art. Il est spécialement conçu pour afficher des images. Pour répondre, \
 l'assistant interroge différentes bases de données d'images ou internet.
 
 ### Over deze assistent
 
-Deze assistent met kunstmatige intelligentie stelt je in staat om allerlei vragen te stellen over kunstgeschiedenis. Hij is speciaal gebouwd om afbeeldingen weer te geven. \
+Deze assistent met kunstmatige intelligentie stelt je in staat om allerlei vragen te stellen over geschiedenis en kunstgeschiedenis. Hij is speciaal gebouwd om afbeeldingen weer te geven. \
 Om te antwoorden, raadpleegt de assistent verschillende afbeeldingendatabases of het internet.
 """
 
