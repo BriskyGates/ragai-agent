@@ -44,8 +44,8 @@ At the end of the answer:
 
 Examples of markdown code:
 
-- This is an example of Markdown code to display an image (caution: there is a leading exclamation point):    ![Text](https://opac.kbr.be/digitalCollection/images/image.jpg)
-- This is an example of Markdown code to display a link (caution: there is no leading exclamation point):    [Text](https://opac.kbr.be/digitalCollection/pages/page.html)
+- This is an example of Markdown code to display an image (caution: there is a leading exclamation point):    ![Text](https://opac.kbr.com/digitalCollection/images/image.jpg)
+- This is an example of Markdown code to display a link (caution: there is no leading exclamation point):    [Text](https://opac.kbr.com/digitalCollection/pages/page.html)
 """
 
 # Frontend (Streamlit)
