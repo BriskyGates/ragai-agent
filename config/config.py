@@ -50,7 +50,7 @@ Examples of markdown code:
 
 # Frontend (Streamlit)
 
-LOGO_PATH = "./images/logo-image-test.jpg"
+LOGO_PATH = "./images/logo-image.jpg"
 ASSISTANT_ICON = "👑"
 ASSISTANT_NAME = "Art History Explorer"
 
