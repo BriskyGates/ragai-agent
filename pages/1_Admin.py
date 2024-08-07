@@ -99,6 +99,10 @@ def get_subcategories(category, depth=1, max_depth=9):
 
 
 def get_links(url):
+    """
+    Returns all the urls/links of a Europeana search page.
+    """
+    
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     links = soup.find_all('a')

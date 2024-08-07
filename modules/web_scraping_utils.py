@@ -91,7 +91,7 @@ def scrape_commons_category(category: str) -> None:
     # Step 2: Parse the HTML content
     soup = BeautifulSoup(html_content, 'html.parser')
 
-    # Step 3: Find all URLs in  tags
+    # Step 3: Find all URLs in tags
     urls = []
     for link in soup.find_all('a'):
         href = link.get('href')
