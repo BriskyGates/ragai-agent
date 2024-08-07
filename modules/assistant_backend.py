@@ -27,7 +27,8 @@ from langchain.tools.retriever import create_retriever_tool
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.prebuilt import create_react_agent
 #from langgraph.checkpoint.sqlite import SqliteSaver  # on disk checkpointer (memory)
-from langgraph.checkpoint import MemorySaver  # an in-memory checkpointer (memory)
+#from langgraph.checkpoint import MemorySaver  # an in-memory checkpointer (memory)
+from langgraph.checkpoint.memory import MemorySaver  # an in-memory checkpointer (memory)
 from langchain_core.tools import tool
 
 from config.config import *
