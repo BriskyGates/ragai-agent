@@ -90,10 +90,13 @@ def get_subcategories(category, depth=1, max_depth=9):
     subcat_div = soup.find('div', {'id': 'mw-subcategories'})
     if subcat_div:
         links = subcat_div.find_all('a')
+        subcat_nbr = 0
         for link in links:
             if 'Category:' in link.get('title', ''):
+                subcat_nbr = subcat_nbr + 1
                 subcat = link.get('title').replace('Category:', '')
                 categories.extend(get_subcategories(subcat, depth + 1, max_depth))
+        st.write(f"Number of sub-categories in '{category}': {subcat_nbr}")
 
     return categories
 
@@ -182,14 +185,20 @@ if st.session_state.password_ok:
         if st.button("Start"):
             if categories_box:
                 categories = categories_box.splitlines()  # List of categories
+            cat_nbr = 0
             for category in categories:
                 if category:
+                    cat_nbr = cat_nbr + 1
                     st.write('Getting the list of subcategories...')
                     subcategories = get_subcategories(category)
+                    subcat_nbr = 0
                     for subcategory in subcategories:
+                        subcat_nbr = subcat_nbr + 1
                         st.write(f"Scraping the web pages... (Category: {subcategory})")
                         scrape_commons_category(subcategory)
                         st.write(f"Web pages scraped and saved in a JSON file!")
+                    st.write(f"*** Number of categories / sub-categories which have been scraped: {subcat_nbr}")
+            st.write(f"****** Number of categories which have been scraped: {cat_nbr}")
 
     elif choice == "Upload File (not in the knowledge base)":
         st.caption("Upload a file in the 'files' directory.")
