@@ -78,13 +78,13 @@ def assistant_frontend():
 
         st.session_state.model = st.radio(
             "AI Model:",
-            (ANTHROPIC_MENU, OPENAI_MENU)
+            (ANTHROPIC_MENU, OPENAI_MENU, AZURE_MENU)
         )
 
         st.session_state.enable_tavily = st.checkbox('Search the internet', value=True)
         st.session_state.enable_rag = st.checkbox('Search the knowledge base', value=True)
 
-        #st.write(f"Model: {st.session_state.model} ({st.session_state.temperature})")
+        st.write(f"Model: {st.session_state.model} ({st.session_state.temperature})")
         
         st.write(ABOUT_TEXT)
         st.write(SIDEBAR_FOOTER)
@@ -142,7 +142,7 @@ def assistant_frontend():
                                         st.chat_message("assistant").markdown(answer)
                                         st.session_state.messages.append({"role": "assistant", "content": answer})
 
-        elif st.session_state.model in (OPENAI_MENU):
+        elif st.session_state.model in (OPENAI_MENU, AZURE_MENU):
 
             # Display all AIMessage + tool calls / No tokens streaming
             

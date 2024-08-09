@@ -15,6 +15,7 @@ import streamlit as st
 from langchain_community.retrievers import BM25Retriever
 from langchain.retrievers import EnsembleRetriever
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_openai import AzureChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_vertexai import ChatVertexAI
@@ -98,10 +99,24 @@ def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enab
             llm = ChatVertexAI(model_name=VERTEXAI_MODEL, temperature=temperature, max_output_tokens=4000)
         elif model == OPENAI_MENU:
             llm = ChatOpenAI(model=OPENAI_MODEL, temperature=temperature)
+        elif model == AZURE_MENU:
+            llm = AzureChatOpenAI(
+                azure_deployment="gpt-4o",
+                api_version="2023-03-15-preview",
+                temperature=0,
+                max_tokens=None,
+                timeout=None,
+                max_retries=2,
+                # organization="...",
+                # model="gpt-35-turbo",
+                # model_version="0125",
+                # other params...
+            )
         elif model == GOOGLE_MENU:
             llm = ChatGoogleGenerativeAI(model=GOOGLE_MODEL, temperature=temperature)
         else:
             st.write("Error: No model available!")
+            st.write("Model: {model}")
             quit()
 
     except Exception as e:

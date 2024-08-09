@@ -5,12 +5,14 @@
 EMBEDDING_MODEL = "text-embedding-3-large"  # Must be a model from OpenAI
 
 OPENAI_MODEL = "gpt-4o-mini"
+AZURE_MODEL = "gpt-4o"
 ANTHROPIC_MODEL = "claude-3-5-sonnet-20240620"  # "claude-3-opus-20240229"
 GOOGLE_MODEL = "gemini-1.5-flash"
 VERTEXAI_MODEL = "gemini-1.5-flash"  # "gemini-1.5-pro"
 OLLAMA_MODEL = "llama3.1"
 
 OPENAI_MENU = "OpenAI / GPT"
+AZURE_MENU = "OpenAI (Azure) / GPT"
 ANTHROPIC_MENU = "Anthropic / Claude"
 GOOGLE_MENU = "Google / Gemini"
 VERTEXAI_MENU = "Google (VertexAI) / Gemini"
