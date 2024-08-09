@@ -101,7 +101,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enab
             llm = ChatOpenAI(model=OPENAI_MODEL, temperature=temperature)
         elif model == AZURE_MENU:
             llm = AzureChatOpenAI(
-                azure_deployment="gpt-4o",
+                azure_deployment=AZURE_MODEL,
                 api_version="2023-03-15-preview",
                 temperature=0,
                 max_tokens=None,
