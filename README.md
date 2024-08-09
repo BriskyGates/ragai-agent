@@ -35,6 +35,7 @@ This application can be configured (see config.py) to create your own specialize
 - Chroma: https://www.trychroma.com (Vector DB)
 - Chromadb Admin: https://github.com/flanker/chromadb-admin (Web admin interface for Chroma)
 - OpenAI (GPT): https://platform.openai.com (LLM)
+- Azure OpenAI (GPT): https://learn.microsoft.com/en-us/azure/ai-services/openai/overview (LLM)
 - Anthropic (Claude): https://console.anthropic.com/dashboard (LLM)
 - Google (Gemini): https://aistudio.google.com/app (LLM)
 - Google VertexAI (Gemini): https://cloud.google.com/vertex-ai (LLM)
@@ -68,6 +69,8 @@ LANGCHAIN_TRACING_V2 = "true"        ==> Set to false if you will not use Langsm
 TAVILY_API_KEY = "tvly-xxx"          ==> Go to https://app.tavily.com/home
 ADMIN_PASSWORD = "xxx"               ==> You chose your password
 GOOGLE_APPLICATION_CREDENTIALS = "./serviceaccountxxx.json"  ==> Path to the Service Account (with VertexAI role) JSON file
+AZURE_OPENAI_ENDPOINT = "https://xxxx.openai.azure.com"
+AZURE_OPENAI_API_KEY = "xxx"
 CHROMA_SERVER_AUTHN_CREDENTIALS ="xxx"                       ==> You chose the password for the Chroma DB authentication
 CHROMA_SERVER_AUTHN_PROVIDER="chromadb.auth.token_authn.TokenAuthenticationServerProvider"
 ```
