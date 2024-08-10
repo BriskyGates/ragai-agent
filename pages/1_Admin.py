@@ -117,6 +117,22 @@ def get_links(url):
         full_links.append(full_link)
     return full_links
 
+def print_links(url, nbr):
+    """
+    Print all the urls of an Europeana search page (english: /en/).
+    """
+
+    base_url = url.replace("page=1", "page={}")
+    urls = [base_url.format(page) for page in range(1, int(nbr)+1)]
+    for url in urls:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        links = soup.find_all('a')
+        notfiltered_links = [link.get('href') for link in links if link.get('href')]
+        filtered_links = [link for link in notfiltered_links if "en/item" in link]
+        for link in filtered_links:
+            full_link = "https://www.europeana.eu" + link
+            st.write(full_link)
 
 st.set_page_config(page_title=ASSISTANT_NAME, page_icon=ASSISTANT_ICON)
 
@@ -151,7 +167,7 @@ if st.session_state.password_ok:
     # Side bar window: second page (Admin)  #
     # # # # # # # # # # # # # # # # # # # # #
     
-    options = ['Upload PDF Files', 'Delete all PDF Files', 'Upload JSON Files (Web Pages)', 'Restore: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Download all JSON Files (Web Pages) in ZIP Format', 'Delete all JSON Files (Web Pages)', 'List all Web Pages URLs', 'List all URLs from Europeana search pages', 'Scrape Web Pages', 'Scrape Web Pages from Wikimedia Commons', 'Embed Pages in DB', 'Model and Temperature', 'Clear Memory and Streamlit Cache', 'Upload File (not in the knowledge base)']
+    options = ['Upload PDF Files', 'Delete all PDF Files', 'Upload JSON Files (Web Pages)', 'Restore: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Download all JSON Files (Web Pages) in ZIP Format', 'Delete all JSON Files (Web Pages)', 'List all Web Pages URLs', 'List all URLs from Europeana search pages',  'List all URLs from an Europeana search page', 'Scrape Web Pages', 'Scrape Web Pages from Wikimedia Commons', 'Embed Pages in DB', 'Model and Temperature', 'Clear Memory and Streamlit Cache', 'Upload File (not in the knowledge base)']
     choice = st.sidebar.radio("Make your choice: ", options)
 
     if choice == "Scrape Web Pages":
@@ -247,6 +263,14 @@ if st.session_state.password_ok:
                     links = get_links(url)
                     for link in links:
                         st.write(link)
+
+    elif choice == 'List all URLs from an Europeana search page':
+        st.caption("List all URLs (Web pages) from an Europeana search page, given the number of search result pages")
+        nbr_search_pages = st.text_input("Number of search result pages: ")
+        first_url = st.text_input("First URL of the Europeana search page:)")
+        if st.button("Start"):
+            if first_url:
+                print_links(first_url, nbr_search_pages)
 
     elif choice == "Upload JSON Files (Web Pages)":
         st.caption("Upload JSON files (Web pages) in the 'json_files' directory (knowledge base). One or many JSON items (Web pages) per JSON file.")
