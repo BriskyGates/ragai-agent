@@ -147,7 +147,7 @@ def instanciate_ai_assistant_graph_agent(model, temperature, enable_tavily, enab
         rag = create_retriever_tool(
             ensemble_retriever,
             "artwork_displayer",
-            "Search the Knowlege Base for artworks."
+            "Search the Knowlege Base for 19th century european artworks (drawing, painting / canvas, engraving / print,  lithography, photography, image)."
         )
 
         if enable_rag and enable_tavily:
