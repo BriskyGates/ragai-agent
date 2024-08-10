@@ -233,7 +233,7 @@ $ sudo systemctl status ollama
 
 * [Streamlit Community cloud](https://streamlit.io/cloud)
 
-You can deploy directly from Github repository to Streamlit Community cloud.
+You can deploy directly from GitHub repository to Streamlit Community cloud.
 
 Demo: https://bmae-ragai-agent.streamlit.app (running the app)
 
@@ -243,7 +243,7 @@ Demo: https://bmae-ragai-agent.streamlit.app (running the app)
 * [Continuous deployment to Azure Web App service](https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github%2Cgithubactions)
 * [How to deploy a Streamlit application to Azure Web App service](https://learn.microsoft.com/en-us/answers/questions/1470782/how-to-deploy-a-streamlit-application-on-azure-app)
 
-You can deploy directly from Github repository to Azure Web App service with Github Actions workflow.
+You can deploy directly from GitHub repository to Azure Web App service with GitHub Actions workflow.
 
 Procedure:
 
@@ -353,7 +353,7 @@ B) Configure the deployment source
 * After you authorize your Azure account with GitHub, select the "Organization", "Repository", and "Branch" you want.
 * Under "Authentication type", select "Basic authentication". Then click on the red message (SCM Basic Auth. is not allowed), and set: SCM Basic Auth. Publishing = On, and click on "Save", and "Continue". Then back to the previous page.
 * Select "Save". New commits in the selected repository and branch now deploy continuously into your Web App. You can track the commits and deployments on the "Logs" tab.
-* Wait for the deployment to finish (15 minutes or so). The Actions workflow YAML file is added in your repo in: .github/workflow/xxxx.yml. Go to Github > Actions, and click on the workflow run to see the Build and Deploy.
+* Wait for the deployment to finish (15 minutes or so). The Actions workflow YAML file is added in your repo in: .github/workflow/xxxx.yml. Go to GitHub > Actions, and click on the workflow run to see the Build and Deploy.
 
 C) Configure the "Startup Command"
 
