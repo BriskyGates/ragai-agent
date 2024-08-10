@@ -124,15 +124,19 @@ def scape_all_europeana_pages(url, nbr):
 
     base_url = url.replace("page=1", "page={}")
     urls = [base_url.format(page) for page in range(1, int(nbr)+1)]
+    j = 0
     for url in urls:
+        j = j + 1
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
         links = soup.find_all('a')
         notfiltered_links = [link.get('href') for link in links if link.get('href')]
         filtered_links = [link for link in notfiltered_links if "en/item" in link]
+        i = 0
         for link in filtered_links:
+            i = i + 1
             full_link = "https://www.europeana.eu" + link
-            st.write(full_link)
+            st.write(f"Search page: {j} -- Page: {i}/{len(filtered_links)} -- {full_link}")
             scrape_web_page_url(full_link, "row mb-3 justify-content-center")
 
 st.set_page_config(page_title=ASSISTANT_NAME, page_icon=ASSISTANT_ICON)
