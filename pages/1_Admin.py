@@ -117,9 +117,9 @@ def get_links(url):
         full_links.append(full_link)
     return full_links
 
-def print_links(url, nbr):
+def scape_all_europeana_pages(url, nbr):
     """
-    Print all the urls of an Europeana search page (english: /en/).
+    Scrape all the urls of an Europeana search (english: /en/).
     """
 
     base_url = url.replace("page=1", "page={}")
@@ -133,6 +133,7 @@ def print_links(url, nbr):
         for link in filtered_links:
             full_link = "https://www.europeana.eu" + link
             st.write(full_link)
+            scrape_web_page_url(full_link, "row mb-3 justify-content-center")
 
 st.set_page_config(page_title=ASSISTANT_NAME, page_icon=ASSISTANT_ICON)
 
@@ -167,7 +168,7 @@ if st.session_state.password_ok:
     # Side bar window: second page (Admin)  #
     # # # # # # # # # # # # # # # # # # # # #
     
-    options = ['Upload PDF Files', 'Delete all PDF Files', 'Upload JSON Files (Web Pages)', 'Restore: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Download all JSON Files (Web Pages) in ZIP Format', 'Delete all JSON Files (Web Pages)', 'List all Web Pages URLs', 'List all URLs from Europeana search pages',  'List all URLs from an Europeana search page', 'Scrape Web Pages', 'Scrape Web Pages from Wikimedia Commons', 'Embed Pages in DB', 'Model and Temperature', 'Clear Memory and Streamlit Cache', 'Upload File (not in the knowledge base)']
+    options = ['Upload PDF Files', 'Delete all PDF Files', 'Upload JSON Files (Web Pages)', 'Restore: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Upload JSON Files (Web Pages) in ZIP Format', 'Backup: Download all JSON Files (Web Pages) in ZIP Format', 'Delete all JSON Files (Web Pages)', 'List all Web Pages URLs', 'Scrape Web Pages', 'Scrape Web Pages from Europeana', 'Scrape Web Pages from Wikimedia Commons', 'Embed Pages in DB', 'Model and Temperature', 'Clear Memory and Streamlit Cache', 'Upload File (not in the knowledge base)']
     choice = st.sidebar.radio("Make your choice: ", options)
 
     if choice == "Scrape Web Pages":
@@ -264,13 +265,13 @@ if st.session_state.password_ok:
                     for link in links:
                         st.write(link)
 
-    elif choice == 'List all URLs from an Europeana search page':
-        st.caption("List all URLs (Web pages) from an Europeana search page, given the number of search result pages")
+    elif choice == 'Scrape Web Pages from Europeana':
+        st.caption("Scape all pages of an Europeana search, when given the first search page url and the number of search result pages.")
         nbr_search_pages = st.text_input("Number of search result pages: ")
-        first_url = st.text_input("First URL of the Europeana search page:)")
+        first_url = st.text_input("First URL of the Europeana search:")
         if st.button("Start"):
             if first_url:
-                print_links(first_url, nbr_search_pages)
+                scape_all_europeana_pages(first_url, nbr_search_pages)
 
     elif choice == "Upload JSON Files (Web Pages)":
         st.caption("Upload JSON files (Web pages) in the 'json_files' directory (knowledge base). One or many JSON items (Web pages) per JSON file.")
