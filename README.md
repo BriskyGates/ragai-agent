@@ -17,7 +17,7 @@ This application can be configured (see config.py) to create your own specialize
 - Web scraping Python framework: Beautifsoup 
 - Vector DB: Chroma (can run locally or on a remote server)
 - Tool n° 1: Hybrid RAG: bm25 keyword search and vector db semantic search. Hybrid RAG improves greatly the efficiency of the RAG search.
-- Tool n° 2: Web search (Tavily)
+- Tool n° 2: Web search, including images (Tavily)
 - Chat history
 - Streaming of the answer
 - Logs sent to Langsmith
