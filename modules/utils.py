@@ -60,7 +60,7 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
                 pages = loader.load_and_split()  # 1 pdf page per chunk
                 i2 = i2 + len(pages)
                 if embed:
-                    st.write(f"Duration: {(j2/60):.2f}/{int(nbr_files/60)} minutes -- PDF files: {j2}/{nbr_files} -- Web pages: {i2}")  # If 1 second per embedding
+                    st.write(f"Duration: {(j2/60):.2f}/{int(nbr_files/60)} minutes -- PDF files: {j2}/{nbr_files} -- PDF pages: {i2}")  # If 1 second per embedding
                     Chroma.from_documents(pages, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
         st.write(f"Number of PDF pages: {i2}")
         st.write(f"Number of Web pages and PDF pages: {i + i2}")
