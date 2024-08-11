@@ -36,8 +36,8 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
         st.write(f"Number of JSON files: {nbr_files}")
         chroma_server_password = os.getenv("CHROMA_SERVER_AUTHN_CREDENTIALS", "YYYY")
         chroma_client = chromadb.HttpClient(host=CHROMA_SERVER_HOST, port=CHROMA_SERVER_PORT, settings=Settings(chroma_client_auth_provider="chromadb.auth.token_authn.TokenAuthClientProvider", chroma_client_auth_credentials=chroma_server_password))
-        j = 0
-        i = 0
+        j = 0  # Number of JSON pages
+        i = 0  # Total number of JSON items / Web pages
         # Custom CSS to fix the position of the text
         st.markdown(
             """
