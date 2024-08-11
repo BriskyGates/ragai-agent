@@ -36,34 +36,15 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
         st.write(f"Number of JSON files: {nbr_files}")
         chroma_server_password = os.getenv("CHROMA_SERVER_AUTHN_CREDENTIALS", "YYYY")
         chroma_client = chromadb.HttpClient(host=CHROMA_SERVER_HOST, port=CHROMA_SERVER_PORT, settings=Settings(chroma_client_auth_provider="chromadb.auth.token_authn.TokenAuthClientProvider", chroma_client_auth_credentials=chroma_server_password))
-        j = 0  # Number of JSON pages
-        i = 0  # Total number of JSON items / Web pages
-        # Custom CSS to fix the position of the text
-        st.markdown(
-            """
-            <style>
-            .fixed-position {
-                position: fixed;
-                top: 100px;
-                right: 100px;
-                background-color: white;
-                padding: 10px;
-                border: 1px solid #ccc;
-                z-index: 9999;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+        j = 0  # Number of JSON files
+        i = 0  # Number of JSON items / Web pages
         for json_file_path in json_file_paths:
             j = j + 1
-            #fixed_position_text = f'<div class="fixed-position">JSON files: {j}/{nbr_files}</div>'
-            #st.markdown(fixed_position_text, unsafe_allow_html=True)
-            st.write(f"JSON files: {j}/{nbr_files}")
             loader = JSONLoader(file_path=json_file_path, jq_schema=".[]", text_content=False)
             docs = loader.load()
             i = i + len(docs)
             if embed:
+                st.write(f"Duration: {(j/60):.2f}/{int(nbr_files/60)} minutes -- JSON files: {j}/{nbr_files} -- Web pages: {i}")  # If 1 second per embedding
                 Chroma.from_documents(docs, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
         st.write(f"Number of Web pages: {i}")
 
@@ -77,7 +58,7 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
                 print(f"PDF file: {pdf_file_path}, Number of PDF pages: {len(pages)}")
                 documents2 = documents2 + pages
         st.write(f"Number of PDF pages: {len(documents2)}")
-        #st.write(f"Number of web and pdf pages: {len(documents) + len(documents2)}")
+        st.write(f"Number of web and pdf pages: {i + len(documents2)}")
         if embed:
             st.write('Write pdf pages in DB...')
             Chroma.from_documents(documents2, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
