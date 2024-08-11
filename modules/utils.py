@@ -59,6 +59,7 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
             j = j + 1
             #fixed_position_text = f'<div class="fixed-position">JSON files: {j}/{nbr_files}</div>'
             #st.markdown(fixed_position_text, unsafe_allow_html=True)
+            st.write(f"JSON files: {j}/{nbr_files}")
             loader = JSONLoader(file_path=json_file_path, jq_schema=".[]", text_content=False)
             docs = loader.load()
             i = i + len(docs)
