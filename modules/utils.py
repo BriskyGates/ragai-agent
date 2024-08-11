@@ -32,10 +32,11 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
 
         embedding_model = OpenAIEmbeddings(model=EMBEDDING_MODEL)
 
-        nbr_files = len(json_file_paths)
-        st.write(f"Number of JSON files: {nbr_files}")
         chroma_server_password = os.getenv("CHROMA_SERVER_AUTHN_CREDENTIALS", "YYYY")
         chroma_client = chromadb.HttpClient(host=CHROMA_SERVER_HOST, port=CHROMA_SERVER_PORT, settings=Settings(chroma_client_auth_provider="chromadb.auth.token_authn.TokenAuthClientProvider", chroma_client_auth_credentials=chroma_server_password))
+
+        nbr_files = len(json_file_paths)
+        st.write(f"Number of JSON files: {nbr_files}")
         j = 0  # Number of JSON files
         i = 0  # Number of JSON items / Web pages
         for json_file_path in json_file_paths:
@@ -50,19 +51,19 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
 
         nbr_files = len(pdf_file_paths)
         st.write(f"Number of PDF files: {nbr_files}")
-        documents2 = []
+        j2 = 0
+        i2 = 0
         if pdf_file_paths:  # if equals to "", then skip
             for pdf_file_path in pdf_file_paths:
+                j2 = j2 + 1
                 loader = PyPDFLoader(pdf_file_path)
                 pages = loader.load_and_split()  # 1 pdf page per chunk
-                print(f"PDF file: {pdf_file_path}, Number of PDF pages: {len(pages)}")
-                documents2 = documents2 + pages
-        st.write(f"Number of PDF pages: {len(documents2)}")
-        st.write(f"Number of web and pdf pages: {i + len(documents2)}")
-        if embed:
-            st.write('Write pdf pages in DB...')
-            Chroma.from_documents(documents2, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
-            st.write('Write in DB: done')
+                i2 = i2 + len(pages)
+                if embed:
+                    st.write(f"Duration: {(j2/60):.2f}/{int(nbr_files/60)} minutes -- PDF files: {j2}/{nbr_files} -- Web pages: {i2}")  # If 1 second per embedding
+                    Chroma.from_documents(pages, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
+        st.write(f"Number of PDF pages: {i2}")
+        st.write(f"Number of Web pages and PDF pages: {i + i2}")
 
     except Exception as e:
         st.write("Error: The Chroma vector DB is not available locally. Is it running on a remote server?")
