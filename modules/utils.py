@@ -44,9 +44,10 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
             loader = JSONLoader(file_path=json_file_path, jq_schema=".[]", text_content=False)
             docs = loader.load()
             i = i + len(docs)
-            if embed and (len(docs) != 0):
+            if embed:
                 st.write(f"Duration: {(j/60):.2f}/{int(nbr_files/60)} minutes -- JSON files: {j}/{nbr_files} -- Web pages: {i}")  # If 1 second per embedding
-                Chroma.from_documents(docs, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
+                if len(docs) != 0:  # Or else there is an error
+                    Chroma.from_documents(docs, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
         st.write(f"Number of Web pages: {i}")
 
         nbr_files = len(pdf_file_paths)
