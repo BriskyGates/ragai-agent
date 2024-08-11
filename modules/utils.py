@@ -34,7 +34,7 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
 
         nbr_files = len(json_file_paths)
         st.write(f"Number of JSON files: {nbr_files}")
-        st.write('Create DB client...')
+        #t.write('Create DB client...')
         chroma_server_password = os.getenv("CHROMA_SERVER_AUTHN_CREDENTIALS", "YYYY")
         chroma_client = chromadb.HttpClient(host=CHROMA_SERVER_HOST, port=CHROMA_SERVER_PORT, settings=Settings(chroma_client_auth_provider="chromadb.auth.token_authn.TokenAuthClientProvider", chroma_client_auth_credentials=chroma_server_password))
         j = 0
@@ -47,7 +47,6 @@ def load_files_and_embed(json_file_paths: list, pdf_file_paths: list, embed: boo
             i = i + len(docs)
             if embed:
                 Chroma.from_documents(docs, embedding=embedding_model, collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
-        st.write(f"Number of JSON files: {j}")        
         st.write(f"Number of Web pages: {i}")
 
         nbr_files = len(pdf_file_paths)
