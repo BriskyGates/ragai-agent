@@ -95,9 +95,10 @@ def get_subcategories(category, excluded_subcategories, depth=1, max_depth=9):
         for link in links:
             if 'Category:' in link.get('title', ''):
                 subcat = link.get('title').replace('Category:', '')
-                if subcat not in excluded_subcategories:
-                    categories.extend(get_subcategories(subcat, excluded_subcategories, depth + 1, max_depth))
-                    subcat_nbr = subcat_nbr + 1
+                for ex_subcat in excluded_subcategories:
+                    if subcat != ex_subcat[:-1]:  # Because there is a hidden character at the end (to be removed)!
+                        categories.extend(get_subcategories(subcat, excluded_subcategories, depth + 1, max_depth))
+                        subcat_nbr = subcat_nbr + 1
         st.write(f"Number of sub-categories in '{category}': {subcat_nbr}")
 
     return categories
@@ -216,6 +217,10 @@ if st.session_state.password_ok:
                     cat_nbr = cat_nbr + 1
                     st.write('Getting the list of subcategories...')
                     subcategories = get_subcategories(category, excluded_subcategories)
+
+                    for c in subcategories:
+                        st.write(f"*** categories and subcategories: {c}")
+
                     subcat_nbr = 0
                     for subcategory in subcategories:
                         subcat_nbr = subcat_nbr + 1
