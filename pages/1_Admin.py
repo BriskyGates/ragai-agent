@@ -98,7 +98,7 @@ def get_subcategories(category, excluded_subcategory, depth=1, max_depth=9):
                 if subcat != excluded_subcategory[:-1]:
                     categories.extend(get_subcategories(subcat, excluded_subcategory, depth + 1, max_depth))
                     subcat_nbr = subcat_nbr + 1
-        st.write(f"Number of sub-categories in '{category}': {subcat_nbr}")
+                    st.write(f"{subcat}")
 
     return categories
 
