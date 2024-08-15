@@ -99,7 +99,7 @@ def get_subcategories(category, excluded_subcategories, depth=1, max_depth=9):
                     if subcat != ex_subcat[:-1]:  # Because there is a hidden character at the end (to be removed)!
                         categories.extend(get_subcategories(subcat, excluded_subcategories, depth + 1, max_depth))
                         subcat_nbr = subcat_nbr + 1
-        st.write(f"Number of sub-categories in '{category}': {subcat_nbr}")
+                        st.write(f"Category / subcategory to be scraped: {subcat}")
 
     return categories
 
