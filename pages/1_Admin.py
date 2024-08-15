@@ -218,15 +218,18 @@ if st.session_state.password_ok:
                     st.write('Getting the list of subcategories...')
                     subcategories = get_subcategories(category, excluded_subcategories)
 
+                    st.write(f("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"))
+                    st.write(f"Categories / subcategories to be scraped:")
                     for c in subcategories:
-                        st.write(f"*** categories and subcategories: {c}")
+                        st.write(f"{c}")
+                    st.write(f("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"))
 
                     subcat_nbr = 0
                     for subcategory in subcategories:
                         subcat_nbr = subcat_nbr + 1
                         st.write(f"Scraping the web pages... (Category: {subcategory})")
                         scrape_commons_category(subcategory)
-                        st.write(f"Web pages scraped and saved in a JSON file!")
+                        #st.write(f"Web pages scraped and saved in a JSON file!")
                     st.write(f"*** Number of categories / sub-categories which have been scraped: {subcat_nbr}")
             st.write(f"****** Number of categories which have been scraped: {cat_nbr}")
 
