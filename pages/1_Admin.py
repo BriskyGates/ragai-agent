@@ -78,7 +78,8 @@ def zip_files(file_paths):
     return buffer
 
 
-def get_subcategories(category, depth=1, max_depth=9):
+def get_subcategories(category, excluded_subcategory, depth=1, max_depth=9):
+
     if depth > max_depth:
         return []
 
@@ -93,9 +94,10 @@ def get_subcategories(category, depth=1, max_depth=9):
         subcat_nbr = 0
         for link in links:
             if 'Category:' in link.get('title', ''):
-                subcat_nbr = subcat_nbr + 1
                 subcat = link.get('title').replace('Category:', '')
-                categories.extend(get_subcategories(subcat, depth + 1, max_depth))
+                if subcat != excluded_subcategory[:-1]:
+                    categories.extend(get_subcategories(subcat, excluded_subcategory, depth + 1, max_depth))
+                    subcat_nbr = subcat_nbr + 1
         st.write(f"Number of sub-categories in '{category}': {subcat_nbr}")
 
     return categories
@@ -203,6 +205,7 @@ if st.session_state.password_ok:
     elif choice == "Scrape Web Pages from Wikimedia Commons":
         st.caption("Give categories from Wikimedia Commons. The pages in the categories and subcategories will be scraped and saved in JSON files (one file per category or subcategory) in the 'json_files' directory (knowledge base).")
         categories_box = st.text_area("Categories (one per line)", height=200)
+        excluded_subcategory = st.text_input("Subcategory to exclude: ")
         if st.button("Start"):
             if categories_box:
                 categories = categories_box.splitlines()  # List of categories
@@ -211,7 +214,7 @@ if st.session_state.password_ok:
                 if category:
                     cat_nbr = cat_nbr + 1
                     st.write('Getting the list of subcategories...')
-                    subcategories = get_subcategories(category)
+                    subcategories = get_subcategories(category, excluded_subcategory)
                     subcat_nbr = 0
                     for subcategory in subcategories:
                         subcat_nbr = subcat_nbr + 1
