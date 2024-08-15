@@ -205,7 +205,7 @@ if st.session_state.password_ok:
     elif choice == "Scrape Web Pages from Wikimedia Commons":
         st.caption("Give categories from Wikimedia Commons. The pages in the categories and subcategories will be scraped and saved in JSON files (one file per category or subcategory) in the 'json_files' directory (knowledge base).")
         categories_box = st.text_area("Categories (one per line)", height=200)
-        excluded_subcategories_box = st.text_area("Subcategories to exclude: ", height=200)
+        excluded_subcategories_box = st.text_area("Subcategories to exclude (one per line): ", height=200)
         excluded_subcategories = excluded_subcategories_box.splitlines()
         if st.button("Start"):
             if categories_box:
