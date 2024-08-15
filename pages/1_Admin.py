@@ -430,7 +430,7 @@ if st.session_state.password_ok:
             chroma_client = chromadb.HttpClient(host=CHROMA_SERVER_HOST, port=CHROMA_SERVER_PORT, settings=Settings(chroma_client_auth_provider="chromadb.auth.token_authn.TokenAuthClientProvider", chroma_client_auth_credentials=chroma_server_password))
             vector_db = Chroma(collection_name=CHROMA_COLLECTION_NAME, client=chroma_client)
             nbr_embeddings = len(vector_db.get()['documents'])
-            st.write(f"Number of embeddings (pages) in the Chroma vector DB: {nbr_embeddings}")
+            st.write(f"Number of embeddings in the Chroma vector DB: {nbr_embeddings}")
 
             try:
 
