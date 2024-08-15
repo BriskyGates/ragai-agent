@@ -133,7 +133,7 @@ def assistant_frontend():
                             for item in data[1:]:
                                 if "name" in item:
                                     answer = item["name"]
-                                    if answer == "artwork_displayer":
+                                    if answer == "belgian_monarchy_art_explorer_retriever":
                                         answer = "Searching the knowledge base..."
                                         st.chat_message("assistant").markdown(answer)
                                         st.session_state.messages.append({"role": "assistant", "content": answer})
@@ -157,7 +157,7 @@ def assistant_frontend():
                         for item in data:
                             if "name" in item:
                                 answer = item["name"]
-                                if answer == "artwork_displayer":
+                                if answer == "belgian_monarchy_art_explorer_retriever":
                                     answer = "Searching the knowledge base..."
                                     st.chat_message("assistant").markdown(answer)
                                     st.session_state.messages.append({"role": "assistant", "content": answer})
