@@ -218,11 +218,11 @@ if st.session_state.password_ok:
                     st.write('Getting the list of subcategories...')
                     subcategories = get_subcategories(category, excluded_subcategories)
 
-                    st.write(f"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+                    st.write(f("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"))
                     st.write(f"Categories / subcategories to be scraped:")
                     for c in subcategories:
                         st.write(f"{c}")
-                    st.write(f"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+                    st.write(f("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"))
 
                     subcat_nbr = 0
                     for subcategory in subcategories:
