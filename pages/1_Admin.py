@@ -78,7 +78,7 @@ def zip_files(file_paths):
     return buffer
 
 
-def get_subcategories(category, excluded_subcategory, depth=1, max_depth=9):
+def get_subcategories(category, excluded_subcategories, depth=1, max_depth=9):
 
     if depth > max_depth:
         return []
@@ -94,10 +94,9 @@ def get_subcategories(category, excluded_subcategory, depth=1, max_depth=9):
         for link in links:
             if 'Category:' in link.get('title', ''):
                 subcat = link.get('title').replace('Category:', '')
-                st.write(f"OOOOOO excluded: {repr(excluded_subcategory)}")
-                st.write(excluded_subcategory.rstrip('\u200e'))
-                if subcat != excluded_subcategory.rstrip('\u200e'):  # Sometimes, there is a hidden character at the end which needs to be removed!
-                    categories.extend(get_subcategories(subcat, excluded_subcategory, depth + 1, max_depth))
+                for i in range(len(excluded_subcategories)): excluded_subcategories[i] = excluded_subcategories[i].rstrip('\u200e')  # Cleaning the list
+                if subcat not in excluded_subcategories:
+                    categories.extend(get_subcategories(subcat, excluded_subcategories, depth + 1, max_depth))
                     st.write(f"{subcat}")
 
     return categories
@@ -205,16 +204,16 @@ if st.session_state.password_ok:
     elif choice == "Scrape Web Pages from Wikimedia Commons":
         st.caption("Give categories from Wikimedia Commons. The pages in the categories and subcategories will be scraped and saved in JSON files (one file per category or subcategory) in the 'json_files' directory (knowledge base).")
         categories_box = st.text_area("Categories (one per line):", height=200)
-        excluded_subcategory = st.text_input("Subcategory to exclude: ")
+        excluded_subcategories_box = st.text_area("Excluded subcategories (one per line):", height=200)
         if st.button("Start"):
-            if categories_box:
-                categories = categories_box.splitlines()  # List of categories
+            categories = categories_box.splitlines()  # List of categories
+            excluded_subcategories = excluded_subcategories_box.splitlines()
             cat_nbr = 0
             for category in categories:
                 if category:
                     cat_nbr = cat_nbr + 1
                     st.write('Getting the list of subcategories...')
-                    subcategories = get_subcategories(category, excluded_subcategory)
+                    subcategories = get_subcategories(category, excluded_subcategories)
                     st.write(f"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
                     st.write(f"Categories / subcategories to be scraped:")
                     for c in subcategories:
