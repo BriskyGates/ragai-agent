@@ -94,6 +94,7 @@ def get_subcategories(category, excluded_subcategory, depth=1, max_depth=9):
         for link in links:
             if 'Category:' in link.get('title', ''):
                 subcat = link.get('title').replace('Category:', '')
+                st.write(f"OOOOOO excluded: {repr(excluded_subcategory)}")
                 if subcat != excluded_subcategory.rstrip('\u200e'):  # Sometimes, there is a hidden character at the end which needs to be removed!
                     categories.extend(get_subcategories(subcat, excluded_subcategory, depth + 1, max_depth))
                     st.write(f"{subcat}")
