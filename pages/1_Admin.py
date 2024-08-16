@@ -88,7 +88,6 @@ def get_subcategories(category, excluded_subcategory, depth=1, max_depth=9):
     soup = BeautifulSoup(response.text, 'html.parser')
 
     categories = [category]
-    subcat_nbr = 0
     subcat_div = soup.find('div', {'id': 'mw-subcategories'})
     if subcat_div:
         links = subcat_div.find_all('a')
@@ -97,7 +96,6 @@ def get_subcategories(category, excluded_subcategory, depth=1, max_depth=9):
                 subcat = link.get('title').replace('Category:', '')
                 if subcat != excluded_subcategory.rstrip('\u200e'):  # Sometimes, there is a hidden character at the end which needs to be removed!
                     categories.extend(get_subcategories(subcat, excluded_subcategory, depth + 1, max_depth))
-                    subcat_nbr = subcat_nbr + 1
                     st.write(f"{subcat}")
 
     return categories
