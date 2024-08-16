@@ -222,7 +222,7 @@ if st.session_state.password_ok:
                     subcat_nbr = 0
                     for subcategory in subcategories:
                         subcat_nbr = subcat_nbr + 1
-                        st.write(f"Scraping the web pages... (Category: {subcategory})")
+                        st.write(f"Scraping the web pages... (Category: {subcategory} ({subcat_nbr}/{len(subcategories)}))")
                         scrape_commons_category(subcategory)
                         #st.write(f"Web pages scraped and saved in a JSON file!")
                     st.write(f"*** Number of categories / sub-categories which have been scraped: {subcat_nbr}")
