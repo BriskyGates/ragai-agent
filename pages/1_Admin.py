@@ -215,7 +215,11 @@ if st.session_state.password_ok:
                     st.write('Getting the list of subcategories...')
                     subcategories = get_subcategories(category, excluded_subcategories)
                     st.write(f"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                    st.write(f"Categories / subcategories to be scraped:")
+                    st.write(f"Number of categories/subcategories with duplicates: {len(subcategories)}")
+                    subcategories2 = subcategories
+                    subcategories = list(set(subcategories2))  # remove duplicates categories
+                    st.write(f"Number of categories/subcategories without duplicates: {len(subcategories)}")
+                    st.write(f"Categories/subcategories to be scraped:")
                     for c in subcategories:
                         st.write(f"{c}")
                     st.write(f"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
