@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: ragai-chroma
+    volumes:
+      - ./chromadb:/chroma/chroma
+    environment:
+      - CHROMA_SERVER_AUTHN_CREDENTIALS=${CHROMA_SERVER_AUTHN_CREDENTIALS}
+      - CHROMA_SERVER_AUTHN_PROVIDER=chromadb.auth.token_authn.TokenAuthenticationServerProvider
+    ports:
+      - "8000:8000"
+    networks:
+      - ragai-network
+
+  app:
+    build: .
+    container_name: ragai-app
+    volumes:
+      - ./files:/app/files
+      - ./.env:/app/.env
+    environment:
+      - CHROMA_SERVER_HOST=chroma
+      - CHROMA_SERVER_PORT=8000
+      - CHROMA_SERVER=True
+    ports:
+      - "8080:8080"
+    depends_on:
+      - chroma
+    networks:
+      - ragai-network
+
+  chroma-admin:
+    image: flanker/chromadb-admin:latest
+    container_name: ragai-chroma-admin
+    ports:
+      - "3000:3000"
+    environment:
+      - CHROMA_SERVER_HOST=chroma
+      - CHROMA_SERVER_PORT=8000
+    depends_on:
+      - chroma
+    networks:
+      - ragai-network
+
+networks:
+  ragai-network:
+    driver: bridge 
